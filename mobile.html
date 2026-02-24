@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Åland Visitor App - Prototype</title>
+    <style>
+        :root {
+            --primary-color: #2E8B57; /* Sea Green */
+            --secondary-color: #4682B4; /* Steel Blue */
+            --bg-color: #F4F7F6;
+            --text-color: #333;
+        }
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+        }
+
+        .app-container {
+            width: 100%;
+            max-width: 414px;
+            background-color: white;
+            min-height: 100vh;
+            position: relative;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+            overflow-x: hidden;
+        }
+
+        header {
+            background-color: var(--primary-color);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom-left-radius: 15px;
+            border-bottom-right-radius: 15px;
+        }
+
+        .language-selector select {
+            background: transparent;
+            color: white;
+            border: 1px solid white;
+            padding: 5px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .language-selector select option {
+            color: black;
+        }
+
+        .search-section {
+            padding: 20px;
+            background: linear-gradient(to bottom, var(--primary-color) 50%, white 50%);
+        }
+
+        .search-bar {
+            width: 100%;
+            padding: 15px;
+            border-radius: 25px;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 20px;
+            padding-bottom: 80px;
+        }
+
+        h2 {
+            margin-bottom: 15px;
+            font-size: 20px;
+            color: var(--secondary-color);
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .category-card {
+            background-color: white;
+            border: 1px solid #eee;
+            border-radius: 12px;
+            padding: 20px 10px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-3px);
+            border-color: var(--primary-color);
+        }
+
+        .category-icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+        }
+
+        .event-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .event-card {
+            background: #e9f5ee;
+            padding: 15px;
+            border-radius: 10px;
+            border-left: 4px solid var(--primary-color);
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .event-card:hover {
+            background: #d4eadc;
+        }
+
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            max-width: 414px;
+            background-color: white;
+            display: flex;
+            justify-content: space-around;
+            padding: 15px 0;
+            border-top: 1px solid #eee;
+            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            z-index: 100;
+        }
+
+        .nav-item {
+            text-align: center;
+            color: #888;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .nav-item.active {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+            display: block;
+            margin-bottom: 3px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    
+    <header>
+        <div class="logo">
+            <h1 style="font-size: 22px;">Visit Åland+</h1>
+        </div>
+        <div class="language-selector">
+            <select id="language" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="sv">Svenska</option>
+                <option value="fi">Suomi</option>
+            </select>
+        </div>
+    </header>
+
+    <div class="search-section">
+        <input type="text" id="searchInput" class="search-bar" placeholder="Search for places, events, or bookings...">
+    </div>
+
+    <div class="content">
+        <h2 id="exploreTitle">Explore & Book</h2>
+        <div class="category-grid">
+            <div class="category-card" onclick="alert('Opening Hotels & Cabins...')">
+                <div class="category-icon">🏨</div>
+                <div class="category-name" id="catHotels">Accommodation</div>
+            </div>
+            <div class="category-card" onclick="alert('Opening Restaurants...')">
+                <div class="category-icon">🍽️</div>
+                <div class="category-name" id="catFood">Restaurants</div>
+            </div>
+            <div class="category-card" onclick="alert('Opening Museums & Attractions...')">
+                <div class="category-icon">🏛️</div>
+                <div class="category-name" id="catMuseums">Museums</div>
+            </div>
+            <div class="category-card" onclick="alert('Opening Fishing & Nature...')">
+                <div class="category-icon">🎣</div>
+                <div class="category-name" id="catFishing">Fishing Licenses</div>
+            </div>
+        </div>
+
+        <h2 id="upcomingTitle">Upcoming Events</h2>
+        <div class="event-list">
+            <div class="event-card" onclick="alert('Viewing Kastelholm Tour Details...')">
+                <strong id="ev1Title">Kastelholm Castle Tour</strong><br>
+                <small id="ev1Time">Today, 14:00 - Guided in English</small>
+            </div>
+            <div class="event-card" onclick="alert('Viewing Harvest Festival Details...')">
+                <strong id="ev2Title">Åland Harvest Festival</strong><br>
+                <small id="ev2Time">Tomorrow, 10:00 - Local Food & Crafts</small>
+            </div>
+            <div class="event-card" onclick="alert('Viewing Maritime Museum Details...')">
+                <strong id="ev3Title">Maritime Museum Exhibition</strong><br>
+                <small id="ev3Time">Ongoing - Open until 17:00</small>
+            </div>
+            <div class="event-card" onclick="alert('Viewing Tall Ships Races Details...')">
+                <strong id="ev4Title">Tall Ships Races</strong><br>
+                <small id="ev4Time">July 24th - Mariehamn West Harbour</small>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-nav">
+        <div class="nav-item active">
+            <span class="nav-icon">🏠</span>
+            <span id="navHome">Home</span>
+        </div>
+        <div class="nav-item" onclick="alert('Opening your digital tickets and bookings...')">
+            <span class="nav-icon">🎫</span>
+            <span id="navTickets">Tickets</span>
+        </div>
+        <div class="nav-item" onclick="alert('Opening interactive Åland map...')">
+            <span class="nav-icon">🗺️</span>
+            <span id="navMap">Map</span>
+        </div>
+        <div class="nav-item" onclick="alert('Opening user profile...')">
+            <span class="nav-icon">👤</span>
+            <span id="navProfile">Profile</span>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    function changeLanguage() {
+        const lang = document.getElementById("language").value;
+        if (lang === "sv") {
+            document.getElementById("searchInput").placeholder = "Sök platser, evenemang eller bokningar...";
+            document.getElementById("exploreTitle").innerText = "Utforska & Boka";
+            document.getElementById("catHotels").innerText = "Boende";
+            document.getElementById("catFood").innerText = "Restauranger";
+            document.getElementById("catMuseums").innerText = "Museer";
+            document.getElementById("catFishing").innerText = "Fiskekort";
+            
+            document.getElementById("upcomingTitle").innerText = "Kommande Evenemang";
+            
+            document.getElementById("ev1Title").innerText = "Kastelholms Slottstur";
+            document.getElementById("ev1Time").innerText = "Idag, 14:00 - Guidad på Svenska";
+            document.getElementById("ev2Title").innerText = "Ålands Skördefest";
+            document.getElementById("ev2Time").innerText = "Imorgon, 10:00 - Lokal Mat & Hantverk";
+            document.getElementById("ev3Title").innerText = "Sjöfartsmuseet Utställning";
+            document.getElementById("ev3Time").innerText = "Pågående - Öppet till 17:00";
+            document.getElementById("ev4Title").innerText = "The Tall Ships Races";
+            document.getElementById("ev4Time").innerText = "24:e Juli - Mariehamn Västra Hamnen";
+
+            document.getElementById("navHome").innerText = "Hem";
+            document.getElementById("navTickets").innerText = "Biljetter";
+            document.getElementById("navMap").innerText = "Karta";
+            document.getElementById("navProfile").innerText = "Profil";
+
+        } else if (lang === "fi") {
+            document.getElementById("searchInput").placeholder = "Etsi paikkoja, tapahtumia tai varauksia...";
+            document.getElementById("exploreTitle").innerText = "Tutki & Varaa";
+            document.getElementById("catHotels").innerText = "Majoitus";
+            document.getElementById("catFood").innerText = "Ravintolat";
+            document.getElementById("catMuseums").innerText = "Museot";
+            document.getElementById("catFishing").innerText = "Kalastusluvat";
+            
+            document.getElementById("upcomingTitle").innerText = "Tulevat Tapahtumat";
+            
+            document.getElementById("ev1Title").innerText = "Kastelholman Linnakierros";
+            document.getElementById("ev1Time").innerText = "Tänään, 14:00 - Opastus englanniksi";
+            document.getElementById("ev2Title").innerText = "Ahvenanmaan Sadonkorjuujuhlat";
+            document.getElementById("ev2Time").innerText = "Huomenna, 10:00 - Paikallista ruokaa & käsitöitä";
+            document.getElementById("ev3Title").innerText = "Merenkulkumuseon Näyttely";
+            document.getElementById("ev3Time").innerText = "Meneillään - Avoinna klo 17:00 asti";
+            document.getElementById("ev4Title").innerText = "The Tall Ships Races";
+            document.getElementById("ev4Time").innerText = "24. Heinäkuuta - Maarianhaminan Länsisatama";
+
+            document.getElementById("navHome").innerText = "Etusivu";
+            document.getElementById("navTickets").innerText = "Liput";
+            document.getElementById("navMap").innerText = "Kartta";
+            document.getElementById("navProfile").innerText = "Profiili";
+
+        } else {
+            document.getElementById("searchInput").placeholder = "Search for places, events, or bookings...";
+            document.getElementById("exploreTitle").innerText = "Explore & Book";
+            document.getElementById("catHotels").innerText = "Accommodation";
+            document.getElementById("catFood").innerText = "Restaurants";
+            document.getElementById("catMuseums").innerText = "Museums";
+            document.getElementById("catFishing").innerText = "Fishing Licenses";
+            
+            document.getElementById("upcomingTitle").innerText = "Upcoming Events";
+            
+            document.getElementById("ev1Title").innerText = "Kastelholm Castle Tour";
+            document.getElementById("ev1Time").innerText = "Today, 14:00 - Guided in English";
+            document.getElementById("ev2Title").innerText = "Åland Harvest Festival";
+            document.getElementById("ev2Time").innerText = "Tomorrow, 10:00 - Local Food & Crafts";
+            document.getElementById("ev3Title").innerText = "Maritime Museum Exhibition";
+            document.getElementById("ev3Time").innerText = "Ongoing - Open until 17:00";
+            document.getElementById("ev4Title").innerText = "Tall Ships Races";
+            document.getElementById("ev4Time").innerText = "July 24th - Mariehamn West Harbour";
+
+            document.getElementById("navHome").innerText = "Home";
+            document.getElementById("navTickets").innerText = "Tickets";
+            document.getElementById("navMap").innerText = "Map";
+            document.getElementById("navProfile").innerText = "Profile";
+        }
+    }
+</script>
+
+</body>
+</html>

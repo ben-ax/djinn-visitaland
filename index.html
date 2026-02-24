@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visit Åland+ | Desktop Portal</title>
+    <style>
+        :root {
+            --primary-color: #2E8B57; /* Sea Green */
+            --primary-dark: #246b43;
+            --secondary-color: #4682B4; /* Steel Blue */
+            --bg-color: #f8faf9;
+            --text-color: #333;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+        }
+
+        /* Top Navigation Bar */
+        header {
+            background-color: white;
+            padding: 15px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+        }
+
+        .logo-container h1 {
+            color: var(--primary-color);
+            font-size: 28px;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #555;
+            font-weight: 600;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-color);
+        }
+
+        .btn {
+            padding: 10px 18px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.1s;
+        }
+
+        .btn-outline {
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            background: transparent;
+        }
+
+        .btn-outline:hover {
+            background: var(--primary-color);
+            color: white;
+        }
+
+        .btn-solid {
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+        }
+
+        .btn-solid:hover {
+            background: #35638a;
+        }
+
+        .language-select {
+            padding: 8px;
+            border-radius: 4px;
+            border: 1px solid #ccc;
+        }
+
+        /* Page View System */
+        .page-view {
+            display: none;
+            animation: fadeIn 0.3s ease-in-out;
+        }
+
+        .page-view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Hero Banner Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(46,139,87,0.9) 0%, rgba(70,130,180,0.9) 100%), url('https://via.placeholder.com/1920x600?text=Aland+Archipelago') no-repeat center center/cover;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 20px;
+        }
+
+        .hero h2 {
+            font-size: 48px;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .hero p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            max-width: 600px;
+        }
+
+        /* Main Content Standard Setup */
+        .main-content {
+            padding: 50px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+            min-height: 60vh;
+        }
+
+        .section-title {
+            font-size: 28px;
+            color: var(--secondary-color);
+            margin-bottom: 25px;
+            border-bottom: 3px solid var(--primary-color);
+            display: inline-block;
+            padding-bottom: 5px;
+        }
+
+        /* Grid Layouts */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: pointer;
+            border: 1px solid #eee;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+            border-color: var(--primary-color);
+        }
+
+        .card-img {
+            height: 150px;
+            background-color: #e0e0e0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 40px;
+            color: white;
+            font-weight: bold;
+            text-align: center;
+            padding: 10px;
+        }
+
+        .card-content {
+            padding: 20px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-content h3 {
+            margin-bottom: 10px;
+            color: #333;
+        }
+
+        .card-content p {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .event-time {
+            color: var(--primary-color) !important;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        /* Sub-page Specific Styles */
+        .booking-item {
+            background: white;
+            padding: 20px;
+            border-left: 5px solid var(--primary-color);
+            border-radius: 8px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price-tag {
+            color: var(--primary-color);
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: auto;
+            padding-top: 15px;
+        }
+
+        .map-container {
+            width: 100%;
+            height: 600px;
+            background: #d1e8e2 url('https://via.placeholder.com/1200x600?text=Interactive+Map+of+Aland+Islands') center/cover;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container" onclick="navigate('home')">
+            <h1>Visit Åland+</h1>
+        </div>
+        
+        <nav class="nav-links">
+            <a onclick="navigate('home')" id="navHome">Home</a>
+            <a onclick="navigate('bookings')" id="navBookings">My Bookings</a>
+            <a onclick="navigate('map')" id="navMap">Map</a>
+            
+            <select class="language-select" id="language" onchange="changeLanguage()">
+                <option value="en">English</option>
+                <option value="sv">Svenska</option>
+                <option value="fi">Suomi</option>
+            </select>
+
+            <a href="mobile.html" class="btn btn-outline">📱 Mobile App</a>
+            <a href="admin.html" class="btn btn-solid">⚙️ Partner Portal</a>
+        </nav>
+    </header>
+
+    <div id="view-home" class="page-view active">
+        <section class="hero">
+            <h2 id="heroTitle">Everything Åland. In One Place.</h2>
+            <p id="heroSub">Plan, book, and experience your perfect trip to the Åland Islands.</p>
+        </section>
+
+        <main class="main-content">
+            <h2 class="section-title" id="exploreTitle">Explore Categories</h2>
+            <div class="grid-container">
+                <div class="card" onclick="navigate('hotels')">
+                    <div class="card-img" style="background: #ffeaa7;">🏨</div>
+                    <div class="card-content">
+                        <h3 id="catHotels">Accommodation</h3>
+                        <p>Find hotels, cabins, and guest houses.</p>
+                    </div>
+                </div>
+                
+                <div class="card" onclick="navigate('restaurants')">
+                    <div class="card-img" style="background: #fab1a0;">🍽️</div>
+                    <div class="card-content">
+                        <h3 id="catFood">Restaurants</h3>
+                        <p>Discover local cuisine and book tables.</p>
+                    </div>
+                </div>
+                
+                <div class="card" onclick="navigate('museums')">
+                    <div class="card-img" style="background: #81ecec;">🏛️</div>
+                    <div class="card-content">
+                        <h3 id="catMuseums">Museums & Culture</h3>
+                        <p>Buy tickets to Kastelholm and more.</p>
+                    </div>
+                </div>
+                
+                <div class="card" onclick="navigate('fishing')">
+                    <div class="card-img" style="background: #74b9ff;">🎣</div>
+                    <div class="card-content">
+                        <h3 id="catFishing">Fishing & Nature</h3>
+                        <p>Purchase digital fishing licenses easily.</p>
+                    </div>
+                </div>
+            </div>
+
+            <h2 class="section-title" id="eventsTitle">Upcoming Events</h2>
+            <div class="grid-container">
+                <div class="card" onclick="alert('Booking Kastelholm Tour...')">
+                    <div class="card-content">
+                        <h3 id="deskEv1Title">Kastelholm Castle Tour</h3>
+                        <p id="deskEv1Time" class="event-time">Today, 14:00</p>
+                        <p id="deskEv1Desc">Guided tour in English through the historic ruins.</p>
+                    </div>
+                </div>
+                
+                <div class="card" onclick="alert('Viewing Harvest Festival info...')">
+                    <div class="card-content">
+                        <h3 id="deskEv2Title">Åland Harvest Festival</h3>
+                        <p id="deskEv2Time" class="event-time">Tomorrow, 10:00 - 18:00</p>
+                        <p id="deskEv2Desc">Experience local food, crafts, and farm visits.</p>
+                    </div>
+                </div>
+                
+                <div class="card" onclick="alert('Booking Museum Tickets...')">
+                    <div class="card-content">
+                        <h3 id="deskEv3Title">Maritime Museum Exhibition</h3>
+                        <p id="deskEv3Time" class="event-time">Ongoing</p>
+                        <p id="deskEv3Desc">Discover Åland's rich seafaring history.</p>
+                    </div>
+                </div>
+                
+                <div class="card" onclick="alert('Viewing Tall Ships Races info...')">
+                    <div class="card-content">
+                        <h3 id="deskEv4Title">Tall Ships Races</h3>
+                        <p id="deskEv4Time" class="event-time">July 24th - 27th</p>
+                        <p id="deskEv4Desc">See the world's most spectacular sailing ships in Mariehamn.</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="view-bookings" class="page-view">
+        <main class="main-content">
+            <h2 class="section-title">My Tickets & Bookings</h2>
+            
+            <div class="booking-item">
+                <div>
+                    <h3 style="color: var(--secondary-color);">Hotel Arkipelag (2 Nights)</h3>
+                    <p>Check-in: 12 July 2026 | Guests: 2</p>
+                    <p style="color: green; font-weight: bold;">Status: Confirmed</p>
+                </div>
+                <button class="btn btn-outline">View Ticket</button>
+            </div>
+
+            <div class="booking-item">
+                <div>
+                    <h3 style="color: var(--secondary-color);">Kastelholm Castle Guided Tour</h3>
+                    <p>Date: 13 July 2026 at 14:00</p>
+                    <p style="color: green; font-weight: bold;">Status: Paid</p>
+                </div>
+                <button class="btn btn-outline">Show QR Code</button>
+            </div>
+        </main>
+    </div>
+
+    <div id="view-map" class="page-view">
+        <main class="main-content">
+            <h2 class="section-title">Interactive Map</h2>
+            <p style="margin-bottom: 20px;">Filter by: <button class="btn btn-outline" style="padding: 5px 10px;">Hotels</button> <button class="btn btn-outline" style="padding: 5px 10px;">Attractions</button></p>
+            <div class="map-container">
+                <h2 style="background: rgba(255,255,255,0.8); padding: 20px; border-radius: 10px;">[ Interactive Map Integration Goes Here ]</h2>
+            </div>
+        </main>
+    </div>
+
+    <div id="view-hotels" class="page-view">
+        <main class="main-content">
+            <button class="btn btn-outline" onclick="navigate('home')" style="margin-bottom: 20px;">← Back</button>
+            <h2 class="section-title">Accommodation</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-img" style="background: #4682B4;">HavsVidden</div>
+                    <div class="card-content">
+                        <h3>HavsVidden Resort</h3>
+                        <p>Luxury cliffside resort with spectacular sea views and cliff houses.</p>
+                        <span class="price-tag">€180 / night</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #2E8B57;">Käringsund</div>
+                    <div class="card-content">
+                        <h3>Käringsund Resort</h3>
+                        <p>Family friendly cabins and activities right by the beach in Eckerö.</p>
+                        <span class="price-tag">€120 / night</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #f39c12;">Arkipelag</div>
+                    <div class="card-content">
+                        <h3>Hotel Arkipelag</h3>
+                        <p>Classic 4-star hotel in central Mariehamn with pools, sauna, and sea views.</p>
+                        <span class="price-tag">€150 / night</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #8e44ad;">Park Alandia</div>
+                    <div class="card-content">
+                        <h3>Park Alandia Hotel</h3>
+                        <p>Recently renovated hotel in the heart of Mariehamn, known for live music.</p>
+                        <span class="price-tag">€135 / night</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #d35400;">Silverskär</div>
+                    <div class="card-content">
+                        <h3>Silverskär Islands</h3>
+                        <p>An exclusive, private island retreat for meetings and unique getaways.</p>
+                        <span class="price-tag">€300 / night</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #16a085;">Kvarnbo</div>
+                    <div class="card-content">
+                        <h3>Kvarnbo Pensionat</h3>
+                        <p>A charming, historic bed & breakfast located in the countryside of Saltvik.</p>
+                        <span class="price-tag">€90 / night</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="view-restaurants" class="page-view">
+        <main class="main-content">
+            <button class="btn btn-outline" onclick="navigate('home')" style="margin-bottom: 20px;">← Back</button>
+            <h2 class="section-title">Restaurants</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-img" style="background: #e17055;">Smakbyn</div>
+                    <div class="card-content">
+                        <h3>Smakbyn</h3>
+                        <p>Local Åland ingredients cooked to perfection by star chef Micke Björklund.</p>
+                        <button class="btn btn-solid" style="margin-top: auto;">Book Table</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #d63031;">Nautical</div>
+                    <div class="card-content">
+                        <h3>Restaurant Nautical</h3>
+                        <p>Fine dining with a spectacular view of the sailing ship Pommern.</p>
+                        <button class="btn btn-solid" style="margin-top: auto;">Book Table</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #fdcb6e; color: #333;">Pub Niska</div>
+                    <div class="card-content">
+                        <h3>Pub Niska</h3>
+                        <p>Famous Åland-style "plåtbröd" (pizza) in the maritime quarter.</p>
+                        <button class="btn btn-solid" style="margin-top: auto;">View Menu</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #6c5ce7;">Kvarter5</div>
+                    <div class="card-content">
+                        <h3>Kvarter5</h3>
+                        <p>Modern dining and an excellent wine bar inside Hotel Pommern.</p>
+                        <button class="btn btn-solid" style="margin-top: auto;">Book Table</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #00b894;">Compagniet</div>
+                    <div class="card-content">
+                        <h3>Compagniet</h3>
+                        <p>Indian-inspired menu, gin bar, and cozy living-room atmosphere.</p>
+                        <button class="btn btn-solid" style="margin-top: auto;">Book Table</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #0984e3;">Uffe på Berget</div>
+                    <div class="card-content">
+                        <h3>Uffe på Berget</h3>
+                        <p>Cafe offering legendary Åland pancakes and amazing views from the tower.</p>
+                        <button class="btn btn-solid" style="margin-top: auto;">View Info</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="view-museums" class="page-view">
+        <main class="main-content">
+            <button class="btn btn-outline" onclick="navigate('home')" style="margin-bottom: 20px;">← Back</button>
+            <h2 class="section-title">Museums & Culture</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-img" style="background: #74b9ff;">Sjöfartsmuseum</div>
+                    <div class="card-content">
+                        <h3>Åland Maritime Museum</h3>
+                        <p>World-class exhibits of Åland's seafaring heritage.</p>
+                        <span class="price-tag">€14.00</span>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #a29bfe;">Kastelholm</div>
+                    <div class="card-content">
+                        <h3>Kastelholm Castle</h3>
+                        <p>Explore the medieval castle ruins.</p>
+                        <span class="price-tag">€10.00</span>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="view-fishing" class="page-view">
+        <main class="main-content">
+            <button class="btn btn-outline" onclick="navigate('home')" style="margin-bottom: 20px;">← Back</button>
+            <h2 class="section-title">Fishing Licenses</h2>
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-img" style="background: #00cec9;">1-Day</div>
+                    <div class="card-content">
+                        <h3>Sport Fishing License (24h)</h3>
+                        <p>Valid for all municipal fishing waters in Åland.</p>
+                        <span class="price-tag">€15.00</span>
+                        <button class="btn btn-solid" style="margin-top: 15px;">Buy Now</button>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-img" style="background: #0984e3;">7-Day</div>
+                    <div class="card-content">
+                        <h3>Weekly Fishing License</h3>
+                        <p>Perfect for your week-long vacation. Includes digital catch reporting.</p>
+                        <span class="price-tag">€35.00</span>
+                        <button class="btn btn-solid" style="margin-top: 15px;">Buy Now</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        // Navigation System for the SPA Prototype
+        function navigate(pageId) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page-view');
+            pages.forEach(page => {
+                page.classList.remove('active');
+            });
+            
+            // Show the target page
+            document.getElementById('view-' + pageId).classList.add('active');
+            
+            // Scroll to top
+            window.scrollTo(0,0);
+        }
+
+        // Translation Script
+        function changeLanguage() {
+            const lang = document.getElementById("language").value;
+            
+            if (lang === "sv") {
+                document.getElementById("navHome").innerText = "Hem";
+                document.getElementById("navBookings").innerText = "Mina Bokningar";
+                document.getElementById("navMap").innerText = "Karta";
+                document.getElementById("heroTitle").innerText = "Allt på Åland. På ett ställe.";
+                document.getElementById("heroSub").innerText = "Planera, boka och upplev din perfekta resa till Åland.";
+                document.getElementById("exploreTitle").innerText = "Utforska Kategorier";
+                document.getElementById("catHotels").innerText = "Boende";
+                document.getElementById("catFood").innerText = "Restauranger";
+                document.getElementById("catMuseums").innerText = "Museer & Kultur";
+                document.getElementById("catFishing").innerText = "Fiske & Natur";
+                
+                // Events Translation
+                document.getElementById("eventsTitle").innerText = "Kommande Evenemang";
+                document.getElementById("deskEv1Title").innerText = "Kastelholms Slottstur";
+                document.getElementById("deskEv1Time").innerText = "Idag, 14:00";
+                document.getElementById("deskEv1Desc").innerText = "Guidad tur på Svenska genom de historiska ruinerna.";
+                document.getElementById("deskEv2Title").innerText = "Ålands Skördefest";
+                document.getElementById("deskEv2Time").innerText = "Imorgon, 10:00 - 18:00";
+                document.getElementById("deskEv2Desc").innerText = "Upplev lokal mat, hantverk och gårdsbesök.";
+                document.getElementById("deskEv3Title").innerText = "Sjöfartsmuseet Utställning";
+                document.getElementById("deskEv3Time").innerText = "Pågående";
+                document.getElementById("deskEv3Desc").innerText = "Upptäck Ålands rika sjöfartshistoria.";
+                document.getElementById("deskEv4Title").innerText = "The Tall Ships Races";
+                document.getElementById("deskEv4Time").innerText = "24:e - 27:e Juli";
+                document.getElementById("deskEv4Desc").innerText = "Se världens mest spektakulära segelfartyg i Mariehamn.";
+
+            } else if (lang === "fi") {
+                document.getElementById("navHome").innerText = "Etusivu";
+                document.getElementById("navBookings").innerText = "Omat varaukset";
+                document.getElementById("navMap").innerText = "Kartta";
+                document.getElementById("heroTitle").innerText = "Koko Ahvenanmaa. Yhdessä paikassa.";
+                document.getElementById("heroSub").innerText = "Suunnittele, varaa ja koe täydellinen matkasi Ahvenanmaalle.";
+                document.getElementById("exploreTitle").innerText = "Tutustu kategorioihin";
+                document.getElementById("catHotels").innerText = "Majoitus";
+                document.getElementById("catFood").innerText = "Ravintolat";
+                document.getElementById("catMuseums").innerText = "Museot ja kulttuuri";
+                document.getElementById("catFishing").innerText = "Kalastus ja luonto";
+                
+                // Events Translation
+                document.getElementById("eventsTitle").innerText = "Tulevat tapahtumat";
+                document.getElementById("deskEv1Title").innerText = "Kastelholman linnakierros";
+                document.getElementById("deskEv1Time").innerText = "Tänään, 14:00";
+                document.getElementById("deskEv1Desc").innerText = "Opastettu englanninkielinen kierros historiallisilla raunioilla.";
+                document.getElementById("deskEv2Title").innerText = "Ahvenanmaan sadonkorjuujuhlat";
+                document.getElementById("deskEv2Time").innerText = "Huomenna, 10:00 - 18:00";
+                document.getElementById("deskEv2Desc").innerText = "Koe paikallinen ruoka, käsityöt ja tilavierailut.";
+                document.getElementById("deskEv3Title").innerText = "Merenkulkumuseon näyttely";
+                document.getElementById("deskEv3Time").innerText = "Meneillään";
+                document.getElementById("deskEv3Desc").innerText = "Tutustu Ahvenanmaan rikkaaseen merenkulkuhistoriaan.";
+                document.getElementById("deskEv4Title").innerText = "The Tall Ships Races";
+                document.getElementById("deskEv4Time").innerText = "24. - 27. heinäkuuta";
+                document.getElementById("deskEv4Desc").innerText = "Näe maailman näyttävimmät purjelaivat Maarianhaminassa.";
+
+            } else {
+                document.getElementById("navHome").innerText = "Home";
+                document.getElementById("navBookings").innerText = "My Bookings";
+                document.getElementById("navMap").innerText = "Map";
+                document.getElementById("heroTitle").innerText = "Everything Åland. In One Place.";
+                document.getElementById("heroSub").innerText = "Plan, book, and experience your perfect trip to the Åland Islands.";
+                document.getElementById("exploreTitle").innerText = "Explore Categories";
+                document.getElementById("catHotels").innerText = "Accommodation";
+                document.getElementById("catFood").innerText = "Restaurants";
+                document.getElementById("catMuseums").innerText = "Museums & Culture";
+                document.getElementById("catFishing").innerText = "Fishing & Nature";
+                
+                // Events Translation
+                document.getElementById("eventsTitle").innerText = "Upcoming Events";
+                document.getElementById("deskEv1Title").innerText = "Kastelholm Castle Tour";
+                document.getElementById("deskEv1Time").innerText = "Today, 14:00";
+                document.getElementById("deskEv1Desc").innerText = "Guided tour in English through the historic ruins.";
+                document.getElementById("deskEv2Title").innerText = "Åland Harvest Festival";
+                document.getElementById("deskEv2Time").innerText = "Tomorrow, 10:00 - 18:00";
+                document.getElementById("deskEv2Desc").innerText = "Experience local food, crafts, and farm visits.";
+                document.getElementById("deskEv3Title").innerText = "Maritime Museum Exhibition";
+                document.getElementById("deskEv3Time").innerText = "Ongoing";
+                document.getElementById("deskEv3Desc").innerText = "Discover Åland's rich seafaring history.";
+                document.getElementById("deskEv4Title").innerText = "Tall Ships Races";
+                document.getElementById("deskEv4Time").innerText = "July 24th - 27th";
+                document.getElementById("deskEv4Desc").innerText = "See the world's most spectacular sailing ships in Mariehamn.";
+            }
+        }
+    </script>
+</body>
+</html>
