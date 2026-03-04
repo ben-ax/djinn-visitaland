@@ -11,6 +11,10 @@
             --secondary-color: #4682B4; /* Steel Blue */
             --bg-color: #f8faf9;
             --text-color: #333;
+            /* Gamification Colors */
+            --gold: #f1c40f; 
+            --silver: #bdc3c7; 
+            --bronze: #cd7f32;
         }
 
         * {
@@ -65,6 +69,7 @@
         }
 
         .nav-links a:hover { color: var(--primary-color); }
+        .nav-highlight { color: #e67e22 !important; }
 
         .btn {
             padding: 10px 18px;
@@ -83,6 +88,9 @@
         .btn-solid { background: var(--secondary-color); color: white; }
         .btn-solid:hover { background: #35638a; }
         
+        .btn-admin { background: #d35400; color: white; }
+        .btn-admin:hover { background: #e67e22; }
+
         .btn-pay { background: var(--primary-color); color: white; width: 100%; margin-top: 15px; padding: 12px;}
         .btn-pay:hover { background: var(--primary-dark); }
 
@@ -169,6 +177,28 @@
         .legend-avail { background: white; border: 1px solid #ccc; }
         .legend-unavail { background: #f5f5f5; border: 1px solid #eee; }
 
+        /* Gamification Styles */
+        .badge-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; }
+        .badge-card { background: white; padding: 20px; border-radius: 10px; text-align: center; border: 2px solid #eee; position: relative; }
+        .badge-card.earned { border-color: var(--gold); background: #fffdf5; }
+        .badge-icon { font-size: 40px; margin-bottom: 10px; }
+        .badge-discount { background: var(--primary-color); color: white; padding: 3px 8px; border-radius: 12px; font-size: 12px; font-weight: bold; display: inline-block; margin-top: 10px;}
+        
+        .leaderboard { background: white; border-radius: 10px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.05); }
+        .leaderboard-row { display: flex; justify-content: space-between; padding: 15px 20px; border-bottom: 1px solid #eee; align-items: center; }
+        .leaderboard-row:nth-child(even) { background: #f9fbfc; }
+        .rank-1 { color: var(--gold); font-size: 20px; font-weight: bold; }
+        .rank-2 { color: var(--silver); font-size: 18px; font-weight: bold; }
+        .rank-3 { color: var(--bronze); font-size: 18px; font-weight: bold; }
+
+        /* Deal Styles */
+        .deal-tag { background: #e74c3c; color: white; padding: 5px 10px; font-size: 12px; font-weight: bold; border-radius: 4px; display: inline-block; margin-bottom: 10px; }
+        .original-price { text-decoration: line-through; color: #999; font-size: 14px; margin-right: 10px; }
+        
+        /* Gamification Info Box Styles */
+        .info-card { background: white; padding: 25px; border-radius: 10px; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.05); border-top: 4px solid var(--secondary-color); }
+        .info-icon { font-size: 40px; margin-bottom: 15px; }
+
     </style>
 </head>
 <body>
@@ -180,6 +210,7 @@
         
         <nav class="nav-links">
             <a onclick="navigate('home')" data-en="Home" data-sv="Hem" data-fi="Etusivu">Home</a>
+            <a onclick="navigate('rewards')" class="nav-highlight" data-en="🔥 Deals & Rewards" data-sv="🔥 Erbjudanden & Belöningar" data-fi="🔥 Tarjoukset & Palkinnot">🔥 Deals & Rewards</a>
             <a onclick="navigate('bookings')" data-en="My Bookings" data-sv="Mina Bokningar" data-fi="Omat varaukset">My Bookings</a>
             <a onclick="navigate('map')" data-en="Map" data-sv="Karta" data-fi="Kartta">Map</a>
             
@@ -191,6 +222,7 @@
 
             <a href="mobile.html" class="btn btn-outline" data-en="📱 Mobile App" data-sv="📱 Mobilapp" data-fi="📱 Mobiilisovellus">📱 Mobile App</a>
             <a href="admin.html" class="btn btn-solid" data-en="⚙️ Partner Portal" data-sv="⚙️ Partnerportal" data-fi="⚙️ Kumppaniportaali">⚙️ Partner Portal</a>
+            <a href="super-admin.html" class="btn btn-admin" data-en="🔒 Super Admin" data-sv="🔒 Super Admin" data-fi="🔒 Super Admin">🔒 Super Admin</a>
         </nav>
     </header>
 
@@ -267,6 +299,113 @@
                         <p data-en="Step back in time to the Viking Age." data-sv="Gå tillbaka i tiden till Vikingatiden." data-fi="Astu ajassa taaksepäin viikinkiaikaan.">Step back in time to the Viking Age.</p>
                         <span class="price-tag">€10.00</span>
                         <button class="btn btn-pay" onclick="openCalendar('Viking Market Entry', '€10.00')" data-en="Buy Ticket" data-sv="Köp Biljett" data-fi="Osta Lippu">Buy Ticket</button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="view-rewards" class="page-view">
+        <main class="main-content">
+            
+            <h2 class="section-title" data-en="How It Works" data-sv="Hur Det Fungerar" data-fi="Kuinka Se Toimii">How It Works</h2>
+            <div class="grid-container" style="margin-bottom: 50px;">
+                <div class="info-card">
+                    <div class="info-icon">🎯</div>
+                    <h3 style="margin-bottom: 10px; color: var(--secondary-color);" data-en="1. Earn Points" data-sv="1. Tjäna Poäng" data-fi="1. Ansaitse Pisteitä">1. Earn Points</h3>
+                    <p data-en="Earn 10 points for every €1 you spend on bookings. Get 500 bonus points for trying a new category or leaving a review!" data-sv="Tjäna 10 poäng för varje €1 du spenderar på bokningar. Få 500 bonuspoäng om du provar en ny kategori eller lämnar en recension!" data-fi="Ansaitse 10 pistettä jokaisesta varauksiin käyttämästäsi eurosta. Saat 500 lisäpistettä, kun kokeilet uutta kategoriaa tai jätät arvostelun!">Earn 10 points for every €1 you spend on bookings. Get 500 bonus points for trying a new category or leaving a review!</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">🎖️</div>
+                    <h3 style="margin-bottom: 10px; color: var(--secondary-color);" data-en="2. Collect Badges" data-sv="2. Samla Märken" data-fi="2. Kerää Merkkejä">2. Collect Badges</h3>
+                    <p data-en="Complete milestones (like visiting 3 museums) to unlock permanent badges for your profile." data-sv="Nå milstolpar (som att besöka 3 museer) för att låsa upp permanenta märken för din profil." data-fi="Saavuta virstanpylväitä (kuten 3 museokäyntiä) avataksesi pysyviä merkkejä profiiliisi.">Complete milestones (like visiting 3 museums) to unlock permanent badges for your profile.</p>
+                </div>
+                <div class="info-card">
+                    <div class="info-icon">💰</div>
+                    <h3 style="margin-bottom: 10px; color: var(--secondary-color);" data-en="3. Get Rewarded" data-sv="3. Få Belöningar" data-fi="3. Saat Palkintoja">3. Get Rewarded</h3>
+                    <p data-en="Use your points to climb the leaderboard, and use your badges to unlock permanent discounts across the platform!" data-sv="Använd dina poäng för att klättra på topplistan, och använd dina märken för att låsa upp permanenta rabatter på plattformen!" data-fi="Käytä pisteitäsi noustaksesi tulostaululla ja käytä merkkejäsi avataksesi pysyviä alennuksia koko alustalla!">Use your points to climb the leaderboard, and use your badges to unlock permanent discounts across the platform!</p>
+                </div>
+            </div>
+
+            <h2 class="section-title" data-en="Exclusive Packages" data-sv="Exklusiva Paket" data-fi="Eksklusiiviset Paketit">Exclusive Packages</h2>
+            <p style="margin-bottom: 30px;" data-en="Bundle services together to earn points faster and save money!" data-sv="Bunta ihop tjänster för att tjäna poäng snabbare och spara pengar!" data-fi="Yhdistä palveluita kerätäksesi pisteitä nopeammin ja säästääksesi rahaa!">Bundle services together to earn points faster and save money!</p>
+            
+            <div class="grid-container">
+                <div class="card">
+                    <div class="card-img" style="background: #27ae60;">🏌️‍♂️ + 🏨 + 🍽️</div>
+                    <div class="card-content">
+                        <div class="deal-tag" data-en="Save 20%" data-sv="Spara 20%" data-fi="Säästä 20%">Save 20%</div>
+                        <h3 data-en="The Ultimate Golf Weekend" data-sv="Den Ultimata Golfhelgen" data-fi="Täydellinen Golf-viikonloppu">The Ultimate Golf Weekend</h3>
+                        <p data-en="Includes 2 nights at Hotel Arkipelag, 18 holes at Ålands Golfklubb, and a 3-course dinner at Smakbyn." data-sv="Inkluderar 2 nätter på Arkipelag, 18 hål på Ålands Golfklubb och 3-rätters på Smakbyn." data-fi="Sisältää 2 yötä Arkipelagissa, 18 reikää Ålands Golfklubbilla ja 3 ruokalajin illallisen Smakbynissä.">Includes 2 nights at Hotel Arkipelag, 18 holes at Ålands Golfklubb, and a 3-course dinner at Smakbyn.</p>
+                        <div style="margin-top: auto;">
+                            <span class="original-price">€350</span><span class="price-tag">€280.00</span>
+                        </div>
+                        <button class="btn btn-pay" onclick="openCalendar('Ultimate Golf Weekend Package', '€280.00')" data-en="Book Package" data-sv="Boka Paket" data-fi="Varaa Paketti">Book Package</button>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-img" style="background: #2980b9;">🎣 + 🛶</div>
+                    <div class="card-content">
+                        <div class="deal-tag" data-en="Save 15%" data-sv="Spara 15%" data-fi="Säästä 15%">Save 15%</div>
+                        <h3 data-en="Archipelago Explorer" data-sv="Skärgårdsutforskaren" data-fi="Saariston Tutkija">Archipelago Explorer</h3>
+                        <p data-en="Includes a 3-day fishing license and a full-day double kayak rental." data-sv="Inkluderar 3-dagars fiskekort och en heldags hyra av dubbelkajak." data-fi="Sisältää 3 päivän kalastusluvan ja koko päivän kajakkivuokran.">Includes a 3-day fishing license and a full-day double kayak rental.</p>
+                        <div style="margin-top: auto;">
+                            <span class="original-price">€95</span><span class="price-tag">€80.00</span>
+                        </div>
+                        <button class="btn btn-pay" onclick="openCalendar('Archipelago Explorer Package', '€80.00')" data-en="Book Package" data-sv="Boka Paket" data-fi="Varaa Paketti">Book Package</button>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 40px; flex-wrap: wrap; margin-top: 50px;">
+                <div style="flex: 2; min-width: 300px;">
+                    <h2 class="section-title" data-en="My Badges" data-sv="Mina Märken" data-fi="Omat Merkit">My Badges</h2>
+                    
+                    <div class="badge-grid">
+                        <div class="badge-card earned">
+                            <div class="badge-icon">🏛️</div>
+                            <h3 data-en="Culture Vulture" data-sv="Kulturgam" data-fi="Kulttuurihaukka">Culture Vulture</h3>
+                            <p style="font-size: 12px; color: #666;" data-en="Visited 3+ Museums" data-sv="Besökt 3+ Museer" data-fi="Vieraillut 3+ Museossa">Visited 3+ Museums</p>
+                            <div class="badge-discount" data-en="10% Off Museum Tickets" data-sv="10% Rabatt på Museer" data-fi="10% Alennus Museoista">10% Off Museum Tickets</div>
+                        </div>
+                        
+                        <div class="badge-card earned">
+                            <div class="badge-icon">🍽️</div>
+                            <h3 data-en="Local Foodie" data-sv="Lokal Foodie" data-fi="Paikallinen Herkuttelija">Local Foodie</h3>
+                            <p style="font-size: 12px; color: #666;" data-en="Dined at 2+ Local Restaurants" data-sv="Ätit på 2+ Lokala Restauranger" data-fi="Syönyt 2+ Paikallisessa Ravintolassa">Dined at 2+ Local Restaurants</p>
+                            <div class="badge-discount" data-en="Free Dessert at Partners" data-sv="Gratis Efterrätt hos Partners" data-fi="Ilmainen Jälkiruoka Kumppaneilla">Free Dessert at Partners</div>
+                        </div>
+
+                        <div class="badge-card">
+                            <div class="badge-icon" style="opacity: 0.3;">🎣</div>
+                            <h3 data-en="Master Angler" data-sv="Mästerfiskare" data-fi="Mestarikastaja">Master Angler</h3>
+                            <p style="font-size: 12px; color: #666;" data-en="Buy a 7-day fishing license (Locked)" data-sv="Köp 7-dagars fiskekort (Låst)" data-fi="Osta 7 päivän kalastuslupa (Lukittu)">Buy a 7-day fishing license (Locked)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="flex: 1; min-width: 300px;">
+                    <h2 class="section-title" data-en="Leaderboard" data-sv="Topplista" data-fi="Tulostaulu">Leaderboard</h2>
+                    <p style="margin-bottom: 20px;" data-en="Top Explorers this month." data-sv="Månadens främsta utforskare." data-fi="Kuukauden parhaat tutkijat.">Top Explorers this month.</p>
+                    
+                    <div class="leaderboard">
+                        <div class="leaderboard-row">
+                            <div style="display: flex; align-items: center; gap: 15px;"><span class="rank-1">🥇</span> <strong>Matti V.</strong></div>
+                            <strong style="color: var(--primary-color);">4,250 pts</strong>
+                        </div>
+                        <div class="leaderboard-row">
+                            <div style="display: flex; align-items: center; gap: 15px;"><span class="rank-2">🥈</span> <strong>Anna S.</strong></div>
+                            <strong style="color: var(--primary-color);">3,800 pts</strong>
+                        </div>
+                        <div class="leaderboard-row" style="background: #e8f5e9; border-left: 4px solid var(--primary-color);">
+                            <div style="display: flex; align-items: center; gap: 15px;"><span class="rank-3">🥉</span> <strong>You</strong></div>
+                            <strong style="color: var(--primary-color);">3,100 pts</strong>
+                        </div>
+                        <div class="leaderboard-row">
+                            <div style="display: flex; align-items: center; gap: 15px;"><span style="color: #999; width: 20px; text-align: center;">4</span> <strong>Erik L.</strong></div>
+                            <strong style="color: var(--primary-color);">2,950 pts</strong>
+                        </div>
                     </div>
                 </div>
             </div>
